@@ -6,7 +6,7 @@ class Program
 
     public:
 
-    int* GetPrimesLessThan(int& numbers);
+    int* GetPrimes(int upperBound, int lowerBound = 0);
     int* GetNumbersUpTo(int quantity);
     void RemoveEvenNumbersAboveTwo(int& numbers);
 };
