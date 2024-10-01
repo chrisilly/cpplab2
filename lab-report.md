@@ -18,16 +18,28 @@ int* Program::GetPrimesLessThan(int quantity)
 ```
 "`the value of parameter cannot be used as a constant`".
 
-*Edit: I ran into a method using dynamic memory allocation (`malloc`) to create a new array in a method. I'm not touching that. I'm reading about Vector use too. I've also come across  There's also this funny reoccuring theme I've come across in my research that reads:* ***Why To Avoid C-Arrays*** 🙂 *C++ methods like `std::vector` and `std::array` seem to be C-style arrays, except wrapped in a class that includes basic functionalities.*
+*Edit: I ran into a method using dynamic memory allocation (`malloc`) to create a new array in a method. I'm not touching that. I'm reading about Vector use too. I've also come across  There's also this funny reoccurring theme I've come across in my research that reads:* ***Why To Avoid C-Arrays*** 🙂 *C++ methods like `std::vector` and `std::array` seem to be C-style arrays, except wrapped in a class that includes basic functionalities.*
 
-Found out about dynamic-allocation-something 😃 that lookes like this: `int* var = new int[size];` This could work! I made my method return a c-array 🤩
+Found out about dynamic-allocation-something 😃 that looks like this: `int* var = new int[size];` This could work! I made my method return a c-array 🤩
 > [!WARNING]
 > REMEMBER TO `DELETE [] VAR` AT SOME POINT WHEN DOING THIS. (OR ELSE MEMORY LEAK?)
 
-3. What do you mean by "**stryk ut** från listan alla jämna tal [...]"? I don't think the size of the array can be changed... *I'm just going to ignore the even numbers.*
+3. What do you mean by "**stryk ut** från listan alla jämna tal [...]"? I don't think the size of the array can be changed... *I'm just going to ignore the even numbers by marking them with a bool.*
 
 The actual implementation now that I sufficiently grasp the language was fairly simple; the struggle was linear. A few moments of staring at this gif did the trick:
-<a href="https://en.wikipedia.org/wiki/File:Animation_Sieve_of_Eratosth.gif"><image alt="A gif demonstrating the Sieve of Eratosthenes algorithm" src="https://upload.wikimedia.org/wikipedia/commons/9/94/Animation_Sieve_of_Eratosth.gif"></image></a>[^2]
+<a href="https://en.wikipedia.org/wiki/File:Animation_Sieve_of_Eratosth.gif" target="_blank"><image style="width" alt="A gif demonstrating the Sieve of Eratosthenes algorithm" src="https://upload.wikimedia.org/wikipedia/commons/9/94/Animation_Sieve_of_Eratosth.gif"></image></a>[^2]
+
+I've just attended the lecture explaining pointers... things are making a little more sense. `&` denotes a reference to memory. A `*` pointer "points" to the content of a reference (but stores the memory address... if assigned with a reference variable... I think)? What does it mean to say `int *value = 5` then?
+
+For some reason I can't assign a default value of zero to the `lowerBound` parameter in the `GetPrimes` method... 🤔
+
+`'Program::GetPrimes': redefinition of default argument: parameter 1`
+
+For whatever reason, `sizeof(numbers)` (my array) is always equal to `4`  and `sizeof(numbers[0])` is also always equal to `4` (as expected, this time). Why is `sizeof(numbers) = 4`??? I can clearly in the debugger see that each value from `numbers[0]` and `numbers[13]` equals 0 to 13, respectively. What??
+
+
+
+<!------------------------------------------------------------->
 
 [^1]: https://www.digitalocean.com/community/tutorials/return-array-in-c-plus-plus-function
 [^2]: https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes
