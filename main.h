@@ -11,4 +11,6 @@ class Program
     int* GetNumbersUpTo(int quantity);
     void RemoveEvenNumbersAboveTwo(int& numbers);
     void PrintNumbers(int *numbers);
+    void Replace(char* source, char *find, char *replace);
+    void Replace(string source, string find, string replace);
 };

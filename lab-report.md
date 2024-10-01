@@ -35,7 +35,7 @@ For some reason I can't assign a default value of zero to the `lowerBound` param
 
 `'Program::GetPrimes': redefinition of default argument: parameter 1`
 
-For whatever reason, `sizeof(numbers)` (my array) is always equal to `4`  and `sizeof(numbers[0])` is also always equal to `4` (as expected, this time). Why is `sizeof(numbers) = 4`??? I can clearly in the debugger see that each value from `numbers[0]` and `numbers[13]` equals 0 to 13, respectively. What??
+For whatever reason, `sizeof(numbers)` (my array) is always equal to `4`  and `sizeof(numbers[0])` is also always equal to `4` (as expected, this time). Why is `sizeof(numbers) = 4`??? I can clearly in the debugger see that each value from `numbers[0]` and `numbers[13]` equals 0 to 13, respectively. What?? Update: I got it to work, but I had to hardcode the arraysize in the `PrintNumbers` for-loop.
 
 
 

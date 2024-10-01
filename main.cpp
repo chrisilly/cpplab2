@@ -3,28 +3,120 @@
 
 using namespace std;
 
-const int quantity = 13;
+const int quantity = 120;
 // int numbers[quantity];
 
 int main(int argc, const char* argv[])
 {
     Program baymax;
 
-    // int *primes = baymax.GetPrimes(quantity, 2);
-    // int primesCount = sizeof(primes) / sizeof(int);
-
-    // std::cout << "Amount of primes found: " << primesCount << endl;
-
-    // Print primes
-    // for(int i = 0; i < sizeof(primes) / sizeof(int); i++)
-    //     std::cout << primes[i] << " ";
-    // std::cout << endl;
-
-    // delete [] primes;
-
     int *primes = baymax.GetPrimes(quantity);
 
     baymax.PrintNumbers(primes);
+}
+
+/// @brief 
+/// @param upperBound Inclusive upper bound; the last number to check
+/// @return All prime values between 0 and the given upperBound
+int* Program::GetPrimes(int upperBound)
+{
+    int size = upperBound + 1;
+    int *numbers = new int[size];
+    bool *marked = new bool[size];
+    int primesCount = 0;
+
+    // Initialize numbers
+    for (int i = 0; i < size; i++)
+    {
+        numbers[i] = i;
+        marked[i] = false;
+    }
+
+    // Mark all non-primes
+    for (int i = 0; i < size; i++)
+    {
+        if(numbers[i] < 2)
+        {
+            marked[i] = true;
+        }
+
+        if(!marked[i])
+        {
+            cout << "Found Prime: " << numbers[i] << endl;
+            cout << "Marking multiples: ";
+            primesCount++;
+
+            for (int j = numbers[i]; numbers[i] * j <= upperBound; j++)
+            {
+                marked[i * j] = true;
+                cout << i * j << ", ";
+            }
+            cout << endl;
+        }
+    }
+
+    // gather all primes in one array
+    int *primes = new int[primesCount];
+    int j = 0;
+    for (int i = 0; i < size; i++)
+    {
+        
+        if(!marked[i])
+        {
+            primes[j] = numbers[i];
+            // primesCount--;
+            j++;
+        }
+    }
+    
+    return primes;
+}
+
+void Program::PrintNumbers(int *numbers)
+{
+    // int arraySize = sizeof(numbers)/sizeof(numbers[0]);
+
+    cout << "Numbers: ";
+    for (int i = 0; i < 30; i++)
+    {
+        cout << numbers[i] << ", ";
+    }
+    cout << endl;
+}
+
+void Program::Replace(char *source, char *find, char *replace)
+{
+    // Step one
+    // Find every instance of before in source
+        //Compare first letter of before with current source
+    
+    int sourceLength = sizeof(source) / sizeof(char);
+    int findLength = sizeof(find) / sizeof(char);
+    int replaceLength = sizeof(replace) / sizeof(char);
+
+    bool match = false;
+    int matchIndex = 0;
+    
+    for (int i = 0; i < sourceLength; i++)
+    {
+        for (int j = 0; j < findLength; j++)
+        {
+            if(source[i + j] != find[j])
+            {
+                match = false;
+                break;
+            }
+
+            matchIndex = i;
+            match = true;
+        }
+
+        if(match)
+        {
+            // if code reaches here, there's a match between find in source (or not at all).
+            // Put string-replacing logic HERE
+        }
+    }
 }
 
 #pragma region AttemptOne
@@ -115,73 +207,3 @@ int* Program::GetPrimes(int upperBound, int lowerBound)
     return primes;
 }
 #pragma endregion
-
-/// @brief 
-/// @param upperBound Inclusive upper bound; the last number to check
-/// @return All prime values between 0 and the given upperBound
-int* Program::GetPrimes(int upperBound)
-{
-    int size = upperBound + 1;
-    int *numbers = new int[size];
-    bool *marked = new bool[size];
-    int primesCount = 0;
-
-    // Initialize numbers
-    for (int i = 0; i < size; i++)
-    {
-        numbers[i] = i;
-        marked[i] = false;
-    }
-
-    // Mark all non-primes
-    for (int i = 0; i < size; i++)
-    {
-        if(numbers[i] < 2)
-        {
-            marked[i] = true;
-        }
-
-        if(!marked[i])
-        {
-            cout << "Found Prime: " << numbers[i] << endl;
-            cout << "Marking multiples: ";
-            primesCount++;
-
-            for (int j = numbers[i]; numbers[i] * j <= upperBound; j++)
-            {
-                marked[i * j] = true;
-                cout << i * j << ", ";
-            }
-            cout << endl;
-        }
-    }
-
-    // gather all primes in one array
-    int *primes = new int[primesCount];
-    int j = 0;
-    for (int i = 0; i < size; i++)
-    {
-        
-        if(!marked[i])
-        {
-            primes[j] = numbers[i];
-            // primesCount--;
-            j++;
-        }
-    }
-    
-    return primes;
-}
-
-void Program::PrintNumbers(int *numbers)
-{
-    // int arraySize = sizeof(numbers)/sizeof(numbers[0]);
-    // int numbersSize = sizeof(numbers);
-
-    cout << "Numbers: ";
-    for (int i = 0; i < 6; i++)
-    {
-        cout << numbers[i] << ", ";
-    }
-    cout << endl;
-}
