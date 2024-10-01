@@ -124,6 +124,7 @@ int* Program::GetPrimes(int upperBound)
     int size = upperBound + 1;
     int *numbers = new int[size];
     bool *marked = new bool[size];
+    int primesCount = 0;
 
     // Initialize numbers
     for (int i = 0; i < size; i++)
@@ -144,6 +145,7 @@ int* Program::GetPrimes(int upperBound)
         {
             cout << "Found Prime: " << numbers[i] << endl;
             cout << "Marking multiples: ";
+            primesCount++;
 
             for (int j = numbers[i]; numbers[i] * j <= upperBound; j++)
             {
@@ -153,8 +155,22 @@ int* Program::GetPrimes(int upperBound)
             cout << endl;
         }
     }
+
+    // gather all primes in one array
+    int *primes = new int[primesCount];
+    int j = 0;
+    for (int i = 0; i < size; i++)
+    {
+        
+        if(!marked[i])
+        {
+            primes[j] = numbers[i];
+            // primesCount--;
+            j++;
+        }
+    }
     
-    return numbers;
+    return primes;
 }
 
 void Program::PrintNumbers(int *numbers)
@@ -163,7 +179,7 @@ void Program::PrintNumbers(int *numbers)
     // int numbersSize = sizeof(numbers);
 
     cout << "Numbers: ";
-    for (int i = 0; i < 14; i++)
+    for (int i = 0; i < 6; i++)
     {
         cout << numbers[i] << ", ";
     }
