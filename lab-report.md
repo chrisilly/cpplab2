@@ -47,6 +47,9 @@ There is apparently a **key** difference between `char cstring[]` and `char *cst
 
 I gave up and used the `<cstring>` library to get the length of my `char *cstring`s (using `strlen`). All I remember being told is that we were supposed to use c-style arrays and c-strings, and the instructions do not touch on whether such libraries are legal. Would've loved to know that before all this struggle.
 
+> [!NOTE]
+> This still wouldn't solve my problem of not knowing the length of my `int *numbers` array. Maybe there's a library for that too? But whatever—everyone uses `std:array` anyway 🙄
+
 <!------------------------------------------------------------->
 
 [^1]: https://www.digitalocean.com/community/tutorials/return-array-in-c-plus-plus-function
