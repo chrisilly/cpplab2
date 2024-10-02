@@ -5,10 +5,11 @@
 using namespace std;
 
 const int quantity = 120;
-char *source = "wow that's crazy";
-char *goodFind = "crazy";
+const char *divider = "----------------------------------";
+char *source = new char[19] {"crist that's crazy"};
+char *goodFind = new char[4] {"cr"};
 char *badFind = "cow";
-char *replace = "inane";
+char *replace = new char[4] {"kw"};
 // int numbers[quantity];
 
 int main(int argc, const char* argv[])
@@ -19,10 +20,21 @@ int main(int argc, const char* argv[])
 
     baymax.PrintNumbers(primes);
 
-    cout << "baymax.Contains(source, goodFind): 1 = ";
-    cout << baymax.Contains(source, goodFind) << endl;
-    cout << "baymax.Contains(source, badFind): 0 = ";
-    cout << baymax.Contains(source, badFind) << endl;
+    cout << divider << endl;
+
+    // cout << "baymax.Contains(source, goodFind): 1 = ";
+    // cout << baymax.Contains(source, goodFind) << endl;
+    // cout << "baymax.Contains(source, badFind): 0 = ";
+    // cout << baymax.Contains(source, badFind) << endl;
+
+    // cout << divider << endl;
+
+    cout << "String: " << source << endl;
+    cout << "Find " << goodFind << " and replace with " << replace << "." << endl;
+    baymax.Replace(source, goodFind, replace);
+    cout << "New string: " << source << endl;
+    
+    cout << divider << endl;
 }
 
 /// @brief 
@@ -99,18 +111,53 @@ void Program::PrintNumbers(int *numbers)
 
 void Program::Replace(char *source, char *find, char *replace)
 {
-    int replaceLength = sizeof(replace) / sizeof(char);
+    int replaceLength = strlen(replace);
+    int sourceLength = strlen(source);
+    int findLength = strlen(find);
 
-    // Step one
-    // Find every instance of before in source
-        //Compare first letter of before with current source
+    int matchingLetters = 0;
 
-    if(Contains(source, find))
+    for (int i = 0; i < (sourceLength - findLength + 1); i++)
     {
-        cout << "Match found." << endl;
+        for (int j = 0; j < findLength; j++)
+        {
+            // As soon as the word substring doesn't match up with the targeted series of letters in the source string, stop, then start comparing the beginning of the substring from the next letter of the source string.
+            if(source[i + j] != find[j])
+            {
+                matchingLetters = 0;
+                break;
+            }
+            
+            matchingLetters++;
 
-        // Replace
+            // Have we found the *whole* `find` within the `source` string?
+            if(matchingLetters == findLength)
+            {
+                source += i-1;
+
+                // Replace `find` with `replace`
+                for (int k = 0; k < findLength; k++)
+                {
+                    source++;
+                    *source = replace[k];
+                    // source[i + k] = find[k];
+                }
+
+                source -= i+1+findLength; // not sure if this is necessary. It does not change the result at least... I just want the pointer to point to the first element again (?)
+
+                // Skip ahead to after the replaced word, and continue checking if there are more instances of the substring in the source string.
+                i += (findLength - 1);
+                break;
+            }
+        }
     }
+
+    // if(Contains(source, find))
+    // {
+    //     cout << "Match found." << endl;
+
+    //     // Replace
+    // }
     
 }
 

@@ -50,6 +50,8 @@ I gave up and used the `<cstring>` library to get the length of my `char *cstrin
 > [!NOTE]
 > This still wouldn't solve my problem of not knowing the length of my `int *numbers` array. Maybe there's a library for that too? But whatever—everyone uses `std:array` anyway 🙄
 
+I stumbled into a write access violation and declared my `char*`s onto the heap (`char *source = new char[] {...}`) instead. Also, I had to change `source[i + k] = find[k];` to `source++; *source = replace[k];` (now using dereference) for any change to actually occur.
+
 <!------------------------------------------------------------->
 
 [^1]: https://www.digitalocean.com/community/tutorials/return-array-in-c-plus-plus-function
