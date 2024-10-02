@@ -1,9 +1,14 @@
 #include <iostream>
 #include "main.h"
+#include <cstring>
 
 using namespace std;
 
 const int quantity = 120;
+char *source = "wow that's crazy";
+char *goodFind = "crazy";
+char *badFind = "cow";
+char *replace = "inane";
 // int numbers[quantity];
 
 int main(int argc, const char* argv[])
@@ -13,6 +18,11 @@ int main(int argc, const char* argv[])
     int *primes = baymax.GetPrimes(quantity);
 
     baymax.PrintNumbers(primes);
+
+    cout << "baymax.Contains(source, goodFind): 1 = ";
+    cout << baymax.Contains(source, goodFind) << endl;
+    cout << "baymax.Contains(source, badFind): 0 = ";
+    cout << baymax.Contains(source, badFind) << endl;
 }
 
 /// @brief 
@@ -68,6 +78,9 @@ int* Program::GetPrimes(int upperBound)
             j++;
         }
     }
+
+    delete[] numbers;
+    delete[] marked;
     
     return primes;
 }
@@ -86,37 +99,50 @@ void Program::PrintNumbers(int *numbers)
 
 void Program::Replace(char *source, char *find, char *replace)
 {
+    int replaceLength = sizeof(replace) / sizeof(char);
+
     // Step one
     // Find every instance of before in source
         //Compare first letter of before with current source
-    
-    int sourceLength = sizeof(source) / sizeof(char);
-    int findLength = sizeof(find) / sizeof(char);
-    int replaceLength = sizeof(replace) / sizeof(char);
 
-    bool match = false;
-    int matchIndex = 0;
-    
-    for (int i = 0; i < sourceLength; i++)
+    if(Contains(source, find))
     {
-        for (int j = 0; j < findLength; j++)
+        cout << "Match found." << endl;
+
+        // Replace
+    }
+    
+}
+
+/// @brief 
+/// @param source The c-string in which to find a substring
+/// @param substring The c-string to find within the other string
+/// @return 
+bool Program::Contains(char *source, char *substring)
+{
+    int sourceLength = strlen(source);
+    int substringLength = strlen(substring);
+
+    int matchingLetters = 0;
+
+    for (int i = 0; i < (sourceLength - substringLength + 1); i++)
+    {
+        for (int j = 0; j < substringLength; j++)
         {
-            if(source[i + j] != find[j])
+            // As soon as the word substring doesn't match up with the targeted series of letters in the source string, stop, then start comparing the beginning of the substring from the next letter of the source string.
+            if(source[i + j] != substring[j])
             {
-                match = false;
+                matchingLetters = 0;
                 break;
             }
-
-            matchIndex = i;
-            match = true;
-        }
-
-        if(match)
-        {
-            // if code reaches here, there's a match between find in source (or not at all).
-            // Put string-replacing logic HERE
+            
+            matchingLetters++;
+            if(matchingLetters == substringLength)
+                return true;
         }
     }
+
+    return false;
 }
 
 #pragma region AttemptOne

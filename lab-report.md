@@ -37,9 +37,19 @@ For some reason I can't assign a default value of zero to the `lowerBound` param
 
 For whatever reason, `sizeof(numbers)` (my array) is always equal to `4`  and `sizeof(numbers[0])` is also always equal to `4` (as expected, this time). Why is `sizeof(numbers) = 4`??? I can clearly in the debugger see that each value from `numbers[0]` and `numbers[13]` equals 0 to 13, respectively. What?? Update: I got it to work, but I had to hardcode the arraysize in the `PrintNumbers` for-loop.
 
+### 2 October 2024
+**ChatGPT** now tells me that "There's no way to determine the size of the dynamically allocated memory using `sizeof` because it only gives the size of the pointer" and that I should "always store the size in a separate variable when you create the array" when you create dynamically allocated arrays. This is an issue. Now I want to create a struct for my c-style arrays, what the heck. *This is why we use `std::string`* :)
 
+There is apparently a **key** difference between `char cstring[]` and `char *cstring` 🫠 During lectures I was under the impression that arrays were *always* just pointers pointing to the first element in the array—and maybe they are under the hood? But apparently arrays are their own data type whose length is calculatable using `sizeof`. The length of `char *cstring`, however, will always return `4` because that's the size of the `pointer` data type.[^3][^4] Now I don't know how the heck to get the size of my c-style arrays. 
+
+> [!IMPORTANT]
+> I think differences likes this could have been better explained in lectures if we discussed more practical (and realistic) implementations of pointers, including at least rough examples of *how we are expected to use them* in upcoming assignments.
+
+I gave up and used the `<cstring>` library to get the length of my `char *cstring`s (using `strlen`). All I remember being told is that we were supposed to use c-style arrays and c-strings, and the instructions do not touch on whether such libraries are legal. Would've loved to know that before all this struggle.
 
 <!------------------------------------------------------------->
 
 [^1]: https://www.digitalocean.com/community/tutorials/return-array-in-c-plus-plus-function
 [^2]: https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes
+[^3]: https://www.naukri.com/code360/library/whats-the-difference-between-char-s-and-char-s-in-c
+[^4]: https://stackoverflow.com/questions/7564033/difference-between-char-and-char
