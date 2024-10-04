@@ -133,6 +133,12 @@ void Program::Replace(char *source, char *find, char *replace)
             // Have we found the *whole* `find` within the `source` string?
             if(matchingLetters == findLength)
             {
+                if(findLength != replaceLength)
+                {
+                    cout << "ERROR: The replace word has to be equally long as the find word." << endl;
+                    break;
+                }
+
                 source += i-1;
 
                 // Replace `find` with `replace`
