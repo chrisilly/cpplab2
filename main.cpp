@@ -10,6 +10,9 @@ char *source = new char[19] {"crist that's crazy"};
 char *goodFind = new char[4] {"cr"};
 char *badFind = "cow";
 char *replace = new char[4] {"kw"};
+string trickySource = "Hejjj";
+string trickyFind = "ej";
+string trickyReplace = "eje";
 // int numbers[quantity];
 
 int main(int argc, const char* argv[])
@@ -29,10 +32,25 @@ int main(int argc, const char* argv[])
 
     // cout << divider << endl;
 
-    cout << "String: " << source << endl;
-    cout << "Find " << goodFind << " and replace with " << replace << "." << endl;
-    baymax.Replace(source, goodFind, replace);
-    cout << "New string: " << source << endl;
+    char *sourceCstring = source;
+    char *findCstring = goodFind;
+    char *replaceCstring = replace;
+
+    cout << "String: " << sourceCstring << endl;
+    cout << "Find " << findCstring << " and replace with " << replaceCstring << "." << endl;
+    baymax.Replace(sourceCstring, findCstring, replaceCstring);
+    cout << "New string: " << sourceCstring << endl;
+    
+    cout << divider << endl;
+
+    string sourceString = trickySource;
+    string findString = trickyFind;
+    string replaceString = trickyReplace;
+
+    cout << "String: " << sourceString << endl;
+    cout << "Find " << findString << " and replace with " << replaceString << "." << endl;
+    baymax.Replace(sourceString, findString, replaceString);
+    cout << "New string: " << sourceString << endl;
     
     cout << divider << endl;
 }
@@ -156,14 +174,41 @@ void Program::Replace(char *source, char *find, char *replace)
                 break;
             }
         }
+    }    
+}
+
+void Program::Replace(string &source, string find, string replace)
+{
+    int matchingLetters = 0;
+
+    for (int i = 0; i < (source.length() - find.length() + 1); i++)
+    {
+        for (int j = 0; j < find.length(); j++)
+        {
+            // The find word doesn't start on index i, reset skip to next
+            if (source[i + j] != find[j])
+            {
+                matchingLetters = 0;
+                break;
+            }
+
+            matchingLetters++;
+            
+            // If we've found the find word in its entirety in the source string...
+            if(matchingLetters == find.length())
+            {
+                
+                // Replace the `find` word with the `replace` word
+                source.replace(i, find.length(), replace);
+                
+                // Skip index ahead to the end of the `replace` word. 
+                // (i.e. Don't keep looking for a `find` inside of the newly replaced section.)
+                i += (replace.length() - 1);
+                break;
+            }
+        }
+        
     }
-
-    // if(Contains(source, find))
-    // {
-    //     cout << "Match found." << endl;
-
-    //     // Replace
-    // }
     
 }
 
@@ -197,92 +242,3 @@ bool Program::Contains(char *source, char *substring)
 
     return false;
 }
-
-#pragma region AttemptOne
-/// @brief Extracts the prime numbers within a given range.
-/// @param upperBound Inclusive upper bound of the range from which to extract primes.
-/// @param lowerBound Inclusive lower bound of the range from which to extract primes. Defaults to zero.
-/// @return Array of primes within given range
-int* Program::GetPrimes(int upperBound, int lowerBound)
-{
-    // We only use positive numbers for this.
-    if(upperBound <= 2)
-        throw(new exception("Bad range."));
-    if(lowerBound < 2)
-        lowerBound = 2;
-
-    // Check that the lowerBound is, in fact a __lower__ bound.
-    // Swap the values in this case
-    // if(lowerBound > upperBound)
-    // {
-    //     int swapper = lowerBound;
-    //     lowerBound = upperBound;
-    //     upperBound = swapper;
-    // }
-
-    int size = upperBound - lowerBound + 1;
-
-    int *numbers = new int[size];
-    bool *marked = new bool[size];
-
-    for (int i = 0; i < size; i++)
-    {
-        numbers[i] = lowerBound + i;
-        marked[i] = false;
-    }
-
-    // Get rid of even numbers and 
-    // for (int i = 0; i < size; i++)
-    //     if(numbers[i] < 2 || numbers[i] % 2 == 0) 
-    //         marked[i] = true;
-    
-    // Mark multiples (non-primes)
-    for (int i = 0; i < size; i++)
-    {
-        // Don't bother marking multiples of non-primes
-        if(!marked[i])
-        {
-            // Mark multiples
-            cout << "Found prime: " << numbers[i] << endl 
-            << "Marked numbers: ";
-            for (int j = numbers[i]; numbers[i] * j <= upperBound; j++)
-            {
-                marked[(numbers[i] * j)] = true;
-                std::cout << (numbers[i] * j) << ", ";
-            }
-            cout << endl;
-        }
-
-        // cout << marked[i] << endl;
-    }
-
-    int primesCount = 0;
-    for (int i = 0; i < size; i++)
-    {
-        if(marked[i] == false)
-        {
-            primesCount++;
-            std::cout << "Primes: " << numbers[i] << ", ";
-        }
-    }
-
-    std::cout << endl << "Prime count: " << primesCount << endl;
-
-    int *primes = new int[primesCount];
-    int j;
-    for (int i = 0; primesCount <= 0; i++)
-    {
-        if(marked[i] == false)
-        {
-            j = primesCount % (primesCount + i);
-            primes[(primesCount % (primesCount + i))] = numbers[i];
-            primesCount--;
-        }
-    }
-
-    // delete [] marked;
-    // delete [] numbers;
-    
-    return primes;
-}
-#pragma endregion

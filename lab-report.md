@@ -35,12 +35,13 @@ For some reason I can't assign a default value of zero to the `lowerBound` param
 
 `'Program::GetPrimes': redefinition of default argument: parameter 1`
 
-For whatever reason, `sizeof(numbers)` (my array) is always equal to `4`  and `sizeof(numbers[0])` is also always equal to `4` (as expected, this time). Why is `sizeof(numbers) = 4`??? I can clearly in the debugger see that each value from `numbers[0]` and `numbers[13]` equals 0 to 13, respectively. What?? Update: I got it to work, but I had to hardcode the arraysize in the `PrintNumbers` for-loop.
+For whatever reason, `sizeof(numbers)` (my array) is always equal to `4`  and `sizeof(numbers[0])` is also always equal to `4` (as expected, this time). Why is `sizeof(numbers) = 4`??? I can clearly in the debugger see that each value from `numbers[0]` and `numbers[13]` equals 0 to 13, respectively. What?? Update: I got it to work, but I had to hard-code the array size in the `PrintNumbers` for-loop.
 
+## Exercise 3: String manipulation with `char *`
 ### 2 October 2024
-**ChatGPT** now tells me that "There's no way to determine the size of the dynamically allocated memory using `sizeof` because it only gives the size of the pointer" and that I should "always store the size in a separate variable when you create the array" when you create dynamically allocated arrays. This is an issue. Now I want to create a struct for my c-style arrays, what the heck. *This is why we use `std::string`* :)
+**ChatGPT** now tells me that "There's no way to determine the size of the dynamically allocated memory using `sizeof` because it only gives the size of the pointer" and that I should "always store the size in a separate variable when you create the array" when you create dynamically allocated arrays. This is an issue. Now I want to create a `struct` for my c-style arrays, what the heck. *This is why we use `std::string`* :)
 
-There is apparently a **key** difference between `char cstring[]` and `char *cstring` 🫠 During lectures I was under the impression that arrays were *always* just pointers pointing to the first element in the array—and maybe they are under the hood? But apparently arrays are their own data type whose length is calculatable using `sizeof`. The length of `char *cstring`, however, will always return `4` because that's the size of the `pointer` data type.[^3][^4] Now I don't know how the heck to get the size of my c-style arrays. 
+There is apparently a **key** difference between `char cstring[]` and `char *cstring` 🫠 During lectures I was under the impression that arrays were *always* just pointers pointing to the first element in the array—and maybe they are under the hood? But apparently arrays are their own data type whose length is calculable using `sizeof`. The length of `char *cstring`, however, will always return `4` because that's the size of the `pointer` data type.[^3][^4] Now I don't know how the heck to get the size of my c-style arrays. 
 
 > [!IMPORTANT]
 > I think differences likes this could have been better explained in lectures if we discussed more practical (and realistic) implementations of pointers, including at least rough examples of *how we are expected to use them* in upcoming assignments.
@@ -50,11 +51,27 @@ I gave up and used the `<cstring>` library to get the length of my `char *cstrin
 > [!NOTE]
 > This still wouldn't solve my problem of not knowing the length of my `int *numbers` array. Maybe there's a library for that too? But whatever—everyone uses `std:array` anyway 🙄
 
-I stumbled into a write access violation and declared my `char*`s onto the heap (`char *source = new char[] {...}`) instead. Also, I had to change `source[i + k] = find[k];` to `source++; *source = replace[k];` (now using dereference) for any change to actually occur.
+I stumbled into a write access violation and declared my c-strings onto the heap (`char *source = new char[] {...}`) instead. Also, I had to change `source[i + k] = find[k];` to `source++; *source = replace[k];` (now using dereference) for any change to actually occur.
 
-<!------------------------------------------------------------->
+### 4 October 2024
+
+It occurred just now after finishing that maybe I could have used pass-by-reference for the c-strings as well simply by combining the operators (as such: `void Replace(char *&source, char *find, char *replace);`). I will have to inquire about this.
+
+## Exercise 2: String manipulation with `std::string`
+### 4 October 2024
+
+I basically just copied my solution for c-strings (`char *`) and applied it to `string` objects. The minor differences including:
+* Using pass-by-reference instead of dereference
+* Making use of the `string.length()` method instead of the c-string library's `strlen(char *var)` method.
+
+**One flaw I have yet to fix is the following:** If the `replace` string is longer than the `find` string, the excess letters in `replace` will start to replace whatever comes after the `find` substring in the `source` string.
+
+After scanning the `std::string` documentation[^5] for a solution to this, I realised `std::string` has a native `replace()` method that uses a `start index` and an `end index` and the given `replace` string. Very nice 👍
+
+<!-- --------------------------------------------------------- -->
 
 [^1]: https://www.digitalocean.com/community/tutorials/return-array-in-c-plus-plus-function
 [^2]: https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes
 [^3]: https://www.naukri.com/code360/library/whats-the-difference-between-char-s-and-char-s-in-c
 [^4]: https://stackoverflow.com/questions/7564033/difference-between-char-and-char
+[^5]: https://cplusplus.com/reference/string/string/

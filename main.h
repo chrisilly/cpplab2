@@ -11,6 +11,6 @@ class Program
     void PrintNumbers(int *numbers);
 
     void Replace(char *source, char *find, char *replace);
-    void Replace(string source, string find, string replace);
+    void Replace(string &source, string find, string replace);
     bool Contains(char *source, char *substring);
 };
